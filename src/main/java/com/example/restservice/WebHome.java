@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class WebHome {
-	@GetMapping("/myapp")
+	@GetMapping("/home")
 	public String home(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
 		model.addAttribute("name", name);
 		return  "home";

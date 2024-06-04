@@ -105,12 +105,17 @@ div.absolute {
       var audio = new Audio('https://cdn.pixabay.com/download/audio/2022/03/24/audio_c50d7fecf2.mp3?filename=ding-101377.mp3');
       audio.play();
       var str = textBox.value;
-      if (str.trim() === '') return;
+      if (str.trim() === ''){
+          addMessage("how can I help you today", 'bot-message bubble left');
+          return;
+       }
       addMessage(str, 'user-message bubble right');
       document.getElementById('rcorners').value = '';
       setTimeout(() => {
         const botResponse = getBotResponse(str);
         addMessage(botResponse, 'bot-message bubble left');
+        var audio = new Audio('https://cdn.pixabay.com/download/audio/2022/03/24/audio_c50d7fecf2.mp3?filename=ding-101377.mp3');
+        audio.play();
     }, 1000);
   });
   textBox.addEventListener("keydown",function (event){
