@@ -1,4 +1,4 @@
-com/example/restservice/Greeting.class
+com/example/restservice/AiReponse.class
 com/example/restservice/RestServiceApplication.class
-com/example/restservice/GreetingController.class
+com/example/restservice/AiController.class
 com/example/restservice/WebHome.class
