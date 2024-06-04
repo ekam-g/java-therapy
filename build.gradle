@@ -25,3 +25,12 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+
+ext {
+    spring {
+        main {
+            webEnvironment = true
+            port = 0
+        }
+    }
+}
