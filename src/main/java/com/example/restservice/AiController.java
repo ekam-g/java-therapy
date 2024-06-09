@@ -1,4 +1,5 @@
 package com.example.restservice;
+
 import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -7,48 +8,49 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 import org.json.JSONObject;
 import java.io.OutputStream;
 import org.json.JSONArray;
+
 @RestController
 public class AiController {
 
-	@GetMapping("/bot")
-	public AiReponse api(@RequestParam(value = "text", defaultValue = "none") String text) {
-		if (text.isBlank()) {
-			return new AiReponse("");
-		}
-		URL url = new URL("http://localhost:11434/api/chat");
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        // Set the request method to GET
-        connection.setRequestMethod("GET");
-
-            // Convert the JSON object to a string
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("role", "user");
-		jsonObject.put("role", "phi3");
-		jsonObject.put("content", text);
-		jsonObject.put("stream", false);
-        String jsonStr = jsonObject.toString();
-
-        // Set the request body
-        connection.setDoOutput(true);
-        OutputStream os = connection.getOutputStream();
-        os.write(jsonStr.getBytes());
-        os.close();
-
-        // Make the request and get the response
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String line;
-        StringBuilder response = new StringBuilder();
-        while ((line = reader.readLine()) != null) {
-            response.append(line);
+    @GetMapping("/bot")
+    public AiReponse api(@RequestParam(value = "text", defaultValue = "none") String text) {
+        if (text.isBlank()) {
+            return new AiReponse("");
         }
-        reader.close();
-        // Parse the JSON response
-        JSONObject jsonObjectos = new JSONObject(response.toString());
-		JSONArray values = (JSONArray) jsonObjectos.get("reponse");
-		return new AiReponse(values.toString());
-	}
+        try {
+            // Create a URI object
+            URI uri = URI.create("http://localhost:11434/api/generate");
+
+            // Create an HttpRequest object
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(uri)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers
+                            .ofString("{\"model\":\"llama3:instruct\",\"prompt\":\"Why is the sky blue?\",\"stream\":false}"))
+                    .build();
+
+            // Send the request and get the response
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request,
+                    HttpResponse.BodyHandlers.ofString());
+
+            // Print the response code and content
+            System.out.println("Response Code: " + response.statusCode());
+            System.out.println("Response: " + response.body());
+            // Parse the JSON response
+            JSONObject jsonObjectos = new JSONObject(response.body());
+            String values =  jsonObjectos.getString("response");
+            return new AiReponse(values.toString());
+        } catch (Exception e) {
+            return new AiReponse(e.toString());
+        }
+    }
 }
