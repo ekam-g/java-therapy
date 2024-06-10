@@ -163,7 +163,7 @@
             const params = new URLSearchParams();
             params.append('text', input);
             params.append('id', 'test1');
-            const response = await fetch(`http://localhost:8090/bot?${params.toString()}`);
+            const response = await fetch(`http://power:8090/bot?${params.toString()}`);
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
             }

@@ -39,7 +39,7 @@ public class AiController {
                 jsonRequester.get(id).getJSONArray("messages").put(newMessage);
             } catch (Exception e) {
                 JSONObject root = new JSONObject();
-                root.put("model", "java-helper");
+                root.put("model", "java-helper:latest");
                 root.put("stream", false);
                 JSONObject newMessage = new JSONObject();
                 newMessage.put("role", "user");
