@@ -1,141 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<style>
-body {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-}
-#rcorners {
-  border-radius: 15px;
-  padding: 10px;
-  width: calc(100% - 80px);
-  max-width: 800px;
-  height: 20px;
-}
-#rcorners2 {
-  border-radius: 5px;
-  padding: 1px;
-  width: 40px;
-  height: 40px;
-}
-#chat-container {
-    display: flex;
-    flex-direction: column;
-    align-items:center;
-    padding: 1rem;
-    overflow-y: auto;
-    border-bottom: 1px solid #ccc;
-    max-height: calc(100vh - 400px);
-    width: calc(100% - 80px);
-    max-width: 800px;
-    margin: 0 auto;
-}
-div.absolute {
-  position: absolute;
-  width: 100%;
-  bottom: 150px;
-  text-align:center;
-}
-.message {
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-    border-radius: 5px;
-    word-wrap: break-word;
-    word-break: break-all;
-    display: inline-block;
-    max-width: calc(90% - 80px);
-}
-.bot-message {
-    align-self: flex-end;
-    margin-right: 25%;
-    text-align: left;
-    background: #f1f1f1;
-    color: #000;
-}
-.user-message {
-    align-self: flex-start;
-    margin-left: 25%;
-    text-align:right;
-    background: #087FFE;
-    color: #ffffff;
-}
-.bubble{
-  --r: 1em;
-  --t: 1.5em;
-  padding: 1em;
-  border-inline: var(--t) solid #0000;
-  border-radius: calc(var(--r) + var(--t))/var(--r);
-  mask:
-    radial-gradient(100% 100% at var(--_p) 0,#0000 99%,#000 102%)
-      var(--_p) 100%/var(--t) var(--t) no-repeat,
-    linear-gradient(#000 0 0) padding-box;
-  }
-.left {
-  --_p: 0;
-  border-bottom-left-radius: 0 0;
-  place-self: start;
-}
-.right {
-  --_p: 100%;
-  border-bottom-right-radius: 0 0;
-  place-self: end;
-}
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    #rcorners {
+      border-radius: 15px;
+      padding: 10px;
+      width: calc(100% - 80px);
+      max-width: 800px;
+      height: 20px;
+    }
+
+    #rcorners2 {
+      border-radius: 5px;
+      padding: 1px;
+      width: 40px;
+      height: 40px;
+    }
+
+    #chat-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+      overflow-y: auto;
+      border-bottom: 1px solid #ccc;
+      max-height: calc(100vh - 400px);
+      width: calc(100% - 80px);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    div.absolute {
+      position: absolute;
+      width: 100%;
+      bottom: 150px;
+      text-align: center;
+    }
+
+    .message {
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      border-radius: 5px;
+      word-wrap: break-word;
+      word-break: break-all;
+      display: inline-block;
+      max-width: calc(90% - 80px);
+    }
+
+    .bot-message {
+      align-self: flex-end;
+      margin-right: 25%;
+      text-align: left;
+      background: #f1f1f1;
+      color: #000;
+    }
+
+    .user-message {
+      align-self: flex-start;
+      margin-left: 25%;
+      text-align: right;
+      background: #087FFE;
+      color: #ffffff;
+    }
+
+    .bubble {
+      --r: 1em;
+      --t: 1.5em;
+      padding: 1em;
+      border-inline: var(--t) solid #0000;
+      border-radius: calc(var(--r) + var(--t))/var(--r);
+      mask:
+        radial-gradient(100% 100% at var(--_p) 0, #0000 99%, #000 102%) var(--_p) 100%/var(--t) var(--t) no-repeat,
+        linear-gradient(#000 0 0) padding-box;
+    }
+
+    .left {
+      --_p: 0;
+      border-bottom-left-radius: 0 0;
+      place-self: start;
+    }
+
+    .right {
+      --_p: 100%;
+      border-bottom-right-radius: 0 0;
+      place-self: end;
+    }
   </style>
   <title>Java Therapy</title>
   <link rel="icon" href="https://www.adm.ee/wordpress/wp-content/uploads/2023/08/JAVA.png" type="image/icon type">
 </head>
+
 <body>
-<center>
-  <h1 style="color:blue;font-family:roboto;">Java<span><img src='https://education.oracle.com/file/general/p-80-java.png' alt="Java Coffee" style="width:100px;height:100px;"></span>Therapy </h1>
-</center>
-<div class = "absolute">
-  <label for="message"></label>
-  <input type="text" placeholder="Send Message" id="rcorners" name="Text">
-  <button id="rcorners2" ><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbiSfwfYCI1kPa07FIm4VmjhCsvuWW3L-O0t32aXMqyw&s" alt="Up Arrow" style="width:30px;height:30px;"></button>
-</div>
-<div id="chat-container">
-<div id="message">
-<script>
-  var msg = document.getElementById("message");
-  var button = document.getElementById("rcorners2");
-  var textBox = document.getElementById("rcorners");
-  button.addEventListener("click", function () {
-      var audio = new Audio('https://cdn.pixabay.com/download/audio/2022/03/24/audio_c50d7fecf2.mp3?filename=ding-101377.mp3');
-      audio.play();
-      var str = textBox.value;
-      if (str.trim() === ''){
-          addMessage("how can I help you today", 'bot-message bubble left');
-          return;
-       }
-      addMessage(str, 'user-message bubble right');
-      document.getElementById('rcorners').value = '';
-      setTimeout(() => {
-        const botResponse = getBotResponse(str);
-        addMessage(botResponse, 'bot-message bubble left');
-        var audio = new Audio('https://cdn.pixabay.com/download/audio/2022/03/24/audio_c50d7fecf2.mp3?filename=ding-101377.mp3');
-        audio.play();
-    }, 1000);
-  });
-  textBox.addEventListener("keydown",function (event){
-      if (event.keyCode == 13){
-          button.click();
-      }
-  });
-  function addMessage(message,className){
-      const messageElement = document.createElement('div');
-      messageElement.className = `message ${className}`;
-      messageElement.textContent = message;
-      document.getElementById('chat-container').appendChild(messageElement);
-      messageElement.scrollIntoView();
-  }
-  function getBotResponse(input) {
-    // Placeholder bot response logic
-    return "I'm a bot, you said: " + input;
-}
-</script>
-</div>
-</div>
+  <center>
+    <h1 style="color:blue;font-family:roboto;">Java<span><img
+          src='https://education.oracle.com/file/general/p-80-java.png' alt="Java Coffee"
+          style="width:100px;height:100px;"></span>Therapy </h1>
+  </center>
+  <div class="absolute">
+    <label for="message"></label>
+    <input type="text" placeholder="Send Message" id="rcorners" name="Text">
+    <button id="rcorners2"><img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbiSfwfYCI1kPa07FIm4VmjhCsvuWW3L-O0t32aXMqyw&s"
+        alt="Up Arrow" style="width:30px;height:30px;"></button>
+  </div>
+  <div id="chat-container">
+    <div id="message">
+      <script>
+        var msg = document.getElementById("message");
+        var button = document.getElementById("rcorners2");
+        var textBox = document.getElementById("rcorners");
+        button.addEventListener("click", function () {
+          var audio = new Audio('https://cdn.pixabay.com/download/audio/2022/03/24/audio_c50d7fecf2.mp3?filename=ding-101377.mp3');
+          audio.play();
+          var str = textBox.value;
+          if (str.trim() === '') {
+            addMessage("how can I help you today", 'bot-message bubble left');
+            return;
+          }
+          addMessage(str, 'user-message bubble right');
+          document.getElementById('rcorners').value = '';
+          setTimeout(() => {
+            const text = str;
+            getBotResponse(text).then((result) => {
+              addMessage(result, 'bot-message bubble left');
+              var audio = new Audio('https://cdn.pixabay.com/download/audio/2022/03/24/audio_c50d7fecf2.mp3?filename=ding-101377.mp3');
+              audio.play();
+            });
+          }, 1000);
+        });
+        textBox.addEventListener("keydown", function (event) {
+          if (event.keyCode == 13) {
+            button.click();
+          }
+        });
+        function addMessage(message, className) {
+          const messageElement = document.createElement('div');
+          messageElement.className = `message ${className}`;
+          messageElement.textContent = message;
+          document.getElementById('chat-container').appendChild(messageElement);
+          messageElement.scrollIntoView();
+        }
+        async function getBotResponse(input) {
+          try {
+            const params = new URLSearchParams();
+            params.append('text', input);
+            params.append('id', 'test1');
+            const response = await fetch(`http://localhost:8090/bot?${params.toString()}`);
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data["content"];
+          } catch (error) {
+            console.error(error);
+            return "Error getting bot response";
+          }
+        }
+      </script>
+    </div>
+  </div>
 </body>
+
 </html>
