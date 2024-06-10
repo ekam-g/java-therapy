@@ -39,7 +39,7 @@ public class AiController {
                 jsonRequester.get(id).getJSONArray("messages").put(newMessage);
             } catch (Exception e) {
                 JSONObject root = new JSONObject();
-                root.put("model", "llama3");
+                root.put("model", "java-helper");
                 root.put("stream", false);
                 JSONObject newMessage = new JSONObject();
                 newMessage.put("role", "user");
@@ -58,15 +58,11 @@ public class AiController {
                             .ofString(jsonRequester.get(id).toString()))
                     .build();
 
-            // Send the request and get the response
             HttpResponse<String> response = HttpClient.newHttpClient().send(request,
                     HttpResponse.BodyHandlers.ofString());
-
-            // Print the response code and content
             System.out.println("Response Code: " + response.statusCode());
             System.out.println("Response: " + response.body());
             System.out.println(jsonRequester.get(id).toString());
-            // Parse the JSON response
             JSONObject jsonObjectos = new JSONObject(response.body());
             String content = jsonObjectos.getJSONObject("message").getString("content");
             JSONObject newMessage = new JSONObject();

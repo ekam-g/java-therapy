@@ -113,6 +113,7 @@
   <div id="chat-container">
     <div id="message">
       <script>
+        const id = getRandomString(10)
         var msg = document.getElementById("message");
         var button = document.getElementById("rcorners2");
         var textBox = document.getElementById("rcorners");
@@ -140,6 +141,16 @@
             button.click();
           }
         });
+        function getRandomString(length) {
+          const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+          let result = '';
+
+          for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+          }
+
+          return result;
+        }
         function addMessage(message, className) {
           const messageElement = document.createElement('div');
           messageElement.className = `message ${className}`;
