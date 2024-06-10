@@ -39,16 +39,16 @@ public class AiController {
                 jsonRequester.get(id).getJSONArray("messages").put(newMessage);
             } catch (Exception e) {
                 JSONObject root = new JSONObject();
-                root.put("model", "llama3-instruct");
+                root.put("model", "llama3");
                 root.put("stream", false);
                 JSONObject newMessage = new JSONObject();
                 newMessage.put("role", "user");
                 newMessage.put("content", text);
-                root.put("messages", newMessage);
+                root.put("messages", new JSONArray().put(newMessage));
                 jsonRequester.put(id, root);
             }
             // Create a URI object
-            URI uri = URI.create("http://localhost:11434/api/generate");
+            URI uri = URI.create("http://localhost:11434/api/chat");
 
             // Create an HttpRequest object
             HttpRequest request = HttpRequest.newBuilder()
@@ -65,10 +65,15 @@ public class AiController {
             // Print the response code and content
             System.out.println("Response Code: " + response.statusCode());
             System.out.println("Response: " + response.body());
+            System.out.println(jsonRequester.get(id).toString());
             // Parse the JSON response
             JSONObject jsonObjectos = new JSONObject(response.body());
-            String values = jsonObjectos.getString("response");
-            return new AiReponse(values.toString());
+            String content = jsonObjectos.getJSONObject("message").getString("content");
+            JSONObject newMessage = new JSONObject();
+            newMessage.put("role", "assistant");
+            newMessage.put("content", content);
+            jsonRequester.get(id).getJSONArray("messages").put(newMessage);
+            return new AiReponse(content);
         } catch (Exception e) {
             return new AiReponse(e.toString());
         }
